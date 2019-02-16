@@ -64,10 +64,35 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		String rating = rs.getString("film.rating");
 		String specialFeatures = rs.getString("film.special_features");
 		List<Actor> cast = findActorsByFilmId(id);
+		String language = findLanguagesByFilmId(id);
 		myFilm = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length,
-				replacementCost, rating, specialFeatures, cast);
+				replacementCost, rating, specialFeatures, cast, language);
 		
 		return myFilm;
+	}
+	
+	private String findLanguagesByFilmId(int filmId) {
+		String myLanguage = "N/A";
+		String query = "SELECT film.title, language.name " + 
+					   "FROM language JOIN film ON film.language_id = language.id " + 
+					   "WHERE film.id = ?;";
+		
+		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			PreparedStatement statement = conn.prepareStatement(query);){
+			
+			statement.setInt(1, filmId);
+			ResultSet rs = statement.executeQuery();
+			
+			if (rs.next()) {
+				myLanguage = rs.getString("language.name");
+			} 
+			
+		} catch (SQLException e) {
+			System.err.println("Something went wrong in findLanguagesByFilmId method.");
+			e.printStackTrace();
+		}
+		
+		return myLanguage;
 	}
 
 	@Override

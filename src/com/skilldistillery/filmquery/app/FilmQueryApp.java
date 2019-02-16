@@ -153,7 +153,7 @@ public class FilmQueryApp {
 	private void displayFilm(Film myFilm) {
 
 		printDivider();
-		System.out.println("Title: " + myFilm.getTitle() + "(" + myFilm.getRating() + ") Released in "
+		System.out.println("Title: " + myFilm.getTitle() + "(" + myFilm.getRating() + ")(" + myFilm.getLanguage() + ") Released in "
 				+ myFilm.getReleaseYear().substring(0, 4));
 		System.out.println("Epic Description:");
 		System.out.println(myFilm.getDescription());
