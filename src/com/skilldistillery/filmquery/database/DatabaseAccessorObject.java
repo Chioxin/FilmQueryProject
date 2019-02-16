@@ -28,11 +28,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public Film findFilmById(int filmId) {
 
 		Film myFilm = null;
+		String querry = "SELECT * FROM film WHERE id = ?";
 
-		try {
-			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-			String querry = "SELECT * FROM film WHERE id = ?";
-			PreparedStatement statement = conn.prepareStatement(querry);
+		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement statement = conn.prepareStatement(querry);){
+			
 			statement.setInt(1, filmId);
 			ResultSet rs = statement.executeQuery();
 
@@ -41,10 +41,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			} else {
 				System.out.println("Could not find a film with ID(" + filmId + ").");
 			}
-
-			rs.close();
-			statement.close();
-			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Something went wrong in FindFilmByID method.");
@@ -77,11 +73,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public Actor findActorById(int actorId) {
 
 		Actor myActor = null;
+		String querry = "SELECT * FROM actor WHERE id = ?";
 
-		try {
-			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-			String querry = "SELECT * FROM actor WHERE id = ?";
-			PreparedStatement statement = conn.prepareStatement(querry);
+		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement statement = conn.prepareStatement(querry);){
+			
 			statement.setInt(1, actorId);
 			ResultSet rs = statement.executeQuery();
 
@@ -107,26 +103,21 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public List<Actor> findActorsByFilmId(int filmId) {
 		List<Actor> myList = new ArrayList<Actor>();
+		String querry = "SELECT actor.id, actor.first_name, actor.last_name " + 
+				"FROM film JOIN film_actor " + 
+				"ON film.id = film_actor.film_id " + 
+				"JOIN actor " + 
+				"ON film_actor.actor_id = actor.id " + 
+				"WHERE film.id = ?;";
 		
-		try {
-			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-			String querry = "SELECT actor.id, actor.first_name, actor.last_name " + 
-							"FROM film JOIN film_actor " + 
-							"ON film.id = film_actor.film_id " + 
-							"JOIN actor " + 
-							"ON film_actor.actor_id = actor.id " + 
-							"WHERE film.id = ?;";
-			PreparedStatement statement = conn.prepareStatement(querry);
+		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			PreparedStatement statement = conn.prepareStatement(querry);){
 			statement.setInt(1, filmId);
 			ResultSet rs = statement.executeQuery();
 			
 			while (rs.next()) {
 				myList.add(createActor(rs));
 			}
-			
-			rs.close();
-			statement.close();
-			conn.close();
 			
 		} catch (SQLException e) {
 			System.err.println("Something went wrong in FindActorByFilm method.");
