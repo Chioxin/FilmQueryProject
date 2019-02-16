@@ -148,22 +148,22 @@ public class Film {
 		this.language = language;
 	}
 
-	// toString override
 	@Override
 	public String toString() {
-		return "Film [id=" + id + ", title=" + title + ", description=" + description + ", release_year=" + releaseYear
-				+ ", language_id=" + languageId + ", rental_duration=" + rentalDuration + ", rental_rate=" + rentalRate
-				+ ", length=" + length + ", replacement_cost=" + replacementCost + ", rating=" + rating
-				+ ", special_features=" + specialFeatures + "]";
+		return "Film [id=" + id + ", title=" + title + ", description=" + description + ", releaseYear=" + releaseYear
+				+ ", languageId=" + languageId + ", rentalDuration=" + rentalDuration + ", rentalRate=" + rentalRate
+				+ ", length=" + length + ", replacementCost=" + replacementCost + ", rating=" + rating
+				+ ", specialFeatures=" + specialFeatures + ", cast=" + cast + ", language=" + language + "]";
 	}
 	
-	// hashCode override
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((cast == null) ? 0 : cast.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + languageId;
 		result = prime * result + length;
 		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
@@ -179,7 +179,6 @@ public class Film {
 		return result;
 	}
 
-	// equals override
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -189,12 +188,22 @@ public class Film {
 		if (getClass() != obj.getClass())
 			return false;
 		Film other = (Film) obj;
+		if (cast == null) {
+			if (other.cast != null)
+				return false;
+		} else if (!cast.equals(other.cast))
+			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
 		if (id != other.id)
+			return false;
+		if (language == null) {
+			if (other.language != null)
+				return false;
+		} else if (!language.equals(other.language))
 			return false;
 		if (languageId != other.languageId)
 			return false;

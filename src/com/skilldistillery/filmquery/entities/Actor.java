@@ -65,6 +65,10 @@ public class Actor {
 		return "Actor [id=" + id + ", first_name=" + firstName + ", last_name=" + lastName + "]";
 	}
 	
+	public String printFullName() {
+		return firstName + " " + lastName;
+	}
+	
 	
 
 }

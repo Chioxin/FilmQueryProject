@@ -153,10 +153,26 @@ public class FilmQueryApp {
 	private void displayFilm(Film myFilm) {
 
 		printDivider();
-		System.out.println("Title: " + myFilm.getTitle() + "(" + myFilm.getRating() + ")(" + myFilm.getLanguage() + ") Released in "
-				+ myFilm.getReleaseYear().substring(0, 4));
+		System.out.println("Title: " + myFilm.getTitle() + "(" + myFilm.getRating() + ")(" + myFilm.getLanguage()
+				+ ") Released in " + myFilm.getReleaseYear().substring(0, 4));
+		System.out.print("Starring:");
+
+		int newRowCounter = 0;
+		for (Actor myActor : myFilm.getCast()) {
+
+			if (newRowCounter % 4 == 0 || newRowCounter == 0) {
+				System.out.println();
+				System.out.print("\t" + myActor.printFullName());
+			} else {
+				System.out.print(" | " + myActor.printFullName());
+			}
+			newRowCounter++;
+		}
+		
+		System.out.println();
+		System.out.println();
 		System.out.println("Epic Description:");
-		System.out.println(myFilm.getDescription());
+		System.out.println("\t" + myFilm.getDescription());
 		printDivider();
 
 	}
