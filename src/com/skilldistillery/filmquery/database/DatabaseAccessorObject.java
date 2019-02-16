@@ -39,7 +39,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			if (rs.next()) {
 				myFilm = createFilm(rs);
 			} else {
-				System.out.println("Could not find a film with ID(" + filmId + ".");
+				System.out.println("Could not find a film with ID(" + filmId + ").");
 			}
 
 			rs.close();
@@ -89,11 +89,14 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				
 				myActor = createActor(rs);
 				
-//				int id = rs.getInt("id");
-//				String firstName = rs.getString("first_name");
-//				String lastName = rs.getString("last_name");
-//				myActor = new Actor(id, firstName, lastName);
+			} else {
+				System.out.println("Could not find an actor with ID(" + actorId + ").");
 			}
+			
+			rs.close();
+			statement.close();
+			conn.close();
+			
 		} catch (SQLException e) {
 			System.err.println("Something went wrong in FindActorByID method.");
 			e.printStackTrace();
@@ -120,6 +123,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			while (rs.next()) {
 				myList.add(createActor(rs));
 			}
+			
+			rs.close();
+			statement.close();
+			conn.close();
 			
 		} catch (SQLException e) {
 			System.err.println("Something went wrong in FindActorByFilm method.");
