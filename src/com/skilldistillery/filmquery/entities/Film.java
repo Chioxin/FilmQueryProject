@@ -3,8 +3,6 @@ package com.skilldistillery.filmquery.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
-
 public class Film {
 	private int id;
 	private String title;
@@ -18,10 +16,11 @@ public class Film {
 	private String rating;
 	private String specialFeatures;
 	private List<Actor> cast;
+	private List<String> languages;
 
 	// Constructors
 	public Film(int id, String title, String description, String releaseYear, int languageId, int rentalDuration,
-			double rentalRate, int length, double replacementCost, String rating, String specialFeatures) {
+			double rentalRate, int length, double replacementCost, String rating, String specialFeatures, List<Actor> cast) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -34,9 +33,7 @@ public class Film {
 		this.replacementCost = replacementCost;
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
-		
-		DatabaseAccessorObject dba = new DatabaseAccessorObject();
-		this.cast = dba.findActorsByFilmId(this.id);
+		this.cast = cast;
 		
 	}
 

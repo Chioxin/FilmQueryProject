@@ -28,10 +28,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public Film findFilmById(int filmId) {
 
 		Film myFilm = null;
-		String querry = "SELECT * FROM film WHERE id = ?";
+		String query = "SELECT * FROM film WHERE id = ?";
 
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-				PreparedStatement statement = conn.prepareStatement(querry);){
+			PreparedStatement statement = conn.prepareStatement(query);){
 			
 			statement.setInt(1, filmId);
 			ResultSet rs = statement.executeQuery();
@@ -43,7 +43,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Something went wrong in FindFilmByID method.");
+			System.err.println("Something went wrong in findFilmByID method.");
 			e.printStackTrace();
 		}
 		return myFilm;
@@ -63,8 +63,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		double replacementCost = rs.getDouble("film.replacement_cost");
 		String rating = rs.getString("film.rating");
 		String specialFeatures = rs.getString("film.special_features");
+		List<Actor> cast = findActorsByFilmId(id);
 		myFilm = new Film(id, title, description, releaseYear, languageId, rentalDuration, rentalRate, length,
-				replacementCost, rating, specialFeatures);
+				replacementCost, rating, specialFeatures, cast);
 		
 		return myFilm;
 	}
@@ -73,10 +74,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public Actor findActorById(int actorId) {
 
 		Actor myActor = null;
-		String querry = "SELECT * FROM actor WHERE id = ?";
+		String query = "SELECT * FROM actor WHERE id = ?";
 
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-				PreparedStatement statement = conn.prepareStatement(querry);){
+			PreparedStatement statement = conn.prepareStatement(query);){
 			
 			statement.setInt(1, actorId);
 			ResultSet rs = statement.executeQuery();
@@ -94,7 +95,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			conn.close();
 			
 		} catch (SQLException e) {
-			System.err.println("Something went wrong in FindActorByID method.");
+			System.err.println("Something went wrong in findActorByID method.");
 			e.printStackTrace();
 		}
 		return myActor;
@@ -103,7 +104,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public List<Actor> findActorsByFilmId(int filmId) {
 		List<Actor> myList = new ArrayList<Actor>();
-		String querry = "SELECT actor.id, actor.first_name, actor.last_name " + 
+		String query = "SELECT actor.id, actor.first_name, actor.last_name " + 
 				"FROM film JOIN film_actor " + 
 				"ON film.id = film_actor.film_id " + 
 				"JOIN actor " + 
@@ -111,7 +112,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				"WHERE film.id = ?;";
 		
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-			PreparedStatement statement = conn.prepareStatement(querry);){
+			PreparedStatement statement = conn.prepareStatement(query);){
+			
 			statement.setInt(1, filmId);
 			ResultSet rs = statement.executeQuery();
 			
@@ -120,7 +122,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			}
 			
 		} catch (SQLException e) {
-			System.err.println("Something went wrong in FindActorByFilm method.");
+			System.err.println("Something went wrong in findActorByFilm method.");
 			e.printStackTrace();
 		}
 
@@ -136,6 +138,34 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		myActor = new Actor(id, firstName, lastName);
 		
 		return myActor;
+	}
+	
+	@Override
+	public List<Film> findFilmByKeyWord(String key) {
+		List<Film> myList = new ArrayList<Film>();
+		String query = "SELECT * " + 
+					   "FROM film " + 
+					   "WHERE title LIKE ? OR description LIKE ?;";
+		
+		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			PreparedStatement statement = conn.prepareStatement(query);){
+		    
+			statement.setString(1, "%" + key + "%");
+		    statement.setString(2, "%" + key + "%");
+			ResultSet rs = statement.executeQuery();
+			
+			while (rs.next()) {
+				myList.add(createFilm(rs));
+			}
+				
+				
+				
+		} catch (SQLException e){
+			System.err.println("Something went wrong in findFilmByKeyWord method");
+			e.printStackTrace();
+		}
+		
+		return myList;
 	}
 
 }
