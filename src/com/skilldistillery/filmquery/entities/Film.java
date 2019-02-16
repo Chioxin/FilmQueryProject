@@ -1,5 +1,10 @@
 package com.skilldistillery.filmquery.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+
 public class Film {
 	private int id;
 	private String title;
@@ -12,6 +17,7 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
+	private List<Actor> cast;
 
 	// Constructors
 	public Film(int id, String title, String description, String releaseYear, int languageId, int rentalDuration,
@@ -28,6 +34,10 @@ public class Film {
 		this.replacementCost = replacementCost;
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
+		
+		DatabaseAccessorObject dba = new DatabaseAccessorObject();
+		this.cast = dba.findActorsByFilmId(this.id);
+		
 	}
 
 	// Getters and Setters
@@ -119,6 +129,17 @@ public class Film {
 		this.specialFeatures = special_features;
 	}
 
+	public List<Actor> getCast() {
+		List<Actor> copy = new ArrayList<Actor>();
+		copy.addAll(cast);
+		
+		return copy;
+	}
+
+	public void setCast(List<Actor> cast) {
+		this.cast = cast;
+	}
+
 	// toString override
 	@Override
 	public String toString() {
@@ -127,7 +148,7 @@ public class Film {
 				+ ", length=" + length + ", replacement_cost=" + replacementCost + ", rating=" + rating
 				+ ", special_features=" + specialFeatures + "]";
 	}
-
+	
 	// hashCode override
 	@Override
 	public int hashCode() {
