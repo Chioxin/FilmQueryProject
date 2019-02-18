@@ -1,5 +1,5 @@
 <dl>
-	<img src="https://github.com/Chioxin/JetsProject/blob/master/UMLJets.png?raw=true" ALIGN="right" alt="UML Diagram" width="400">
+	<img src="https://raw.githubusercontent.com/Chioxin/FilmQueryProject/master/MovieTheatre.png" ALIGN="right" alt="UML Diagram" width="400">
 </dl>
 
 ## Film Query Application
