@@ -1,5 +1,5 @@
 <dl>
-	<img src="https://raw.githubusercontent.com/Chioxin/FilmQueryProject/master/MovieTheatre.png" ALIGN="right" alt="UML Diagram" width="400">
+	<img src="https://raw.githubusercontent.com/Chioxin/FilmQueryProject/master/MovieTheatre.png" ALIGN="right" alt="UML Diagram" width="300">
 </dl>
 
 ## Film Query Application
@@ -8,7 +8,7 @@ With the database of a basic block buster video, we were tasked to design an app
 
 ### Technology Used
 * Java
-** OOP techniques
+ * OOP techniques
 * Eclipse
 * MySQL
 * MAMP
